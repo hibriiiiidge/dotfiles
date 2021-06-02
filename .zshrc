@@ -1,213 +1,223 @@
-# _________________________________
-#< Life is like a box of chocolate >
-# ---------------------------------
-#        \   ^__^
-#         \  (oo)\_______
-#            (__)\       )\/\
-#                ||----w |
-#                ||     ||
+# 少し凝った zshrc
+# License : MIT
+# http://mollifier.mit-license.org/
 
-# for debug
-#zmodload zsh/zprof && zprof
+########################################
+# 環境変数
+# export LANG=ja_JP.UTF-8
+export LANG=en_US.UTF-8
 
-# zplug init
-if [[ ! -d ~/.zplug ]]; then
-    git clone https://github.com/zplug/zplug ~/.zplug
-    source ~/.zplug/init.zsh && zplug update --self
-fi
-source ~/.zplug/init.zsh
+# 色を使用出来るようにする
+autoload -Uz colors
+colors
 
-# LANG
-export LANG=ja_JP.UTF-8
-# Use vim
-export EDITOR="vim"
+# emacs 風キーバインドにする
+bindkey -e
 
-# PATH
-# localのpipディレクトリにPATHを通す
-export PATH=$HOME/.local/bin:$PATH
-
-# Add zplug bin
-export PATH=$HOME/.zplug/bin:$PATH
-
-# Added by the Heroku Toolbelt
-export PATH="/usr/local/heroku/bin:$PATH"
-
-export PATH=$HOME/bin:$PATH
-
-# go
-export GOPATH=$HOME/.go
-
-## サーバ個別のPATH設定をインポート
-if [ -f ~/.zshrc.path ]; then
-    source ~/.zshrc.path
-fi
-
-# direnv
-if type direnv >/dev/null 2>&1; then
-    eval "$(direnv hook zsh)"
-fi
-
-# エイリアス設定
-alias vi="vim -u NONE --noplugin"
-alias awk="gawk"
-alias ll="ls -l"
-alias la="ls -a"
-alias mv="mv -i"
-alias rm="rm -i"
-alias grep="grep --color=auto -i"
-alias zgrep="zgrep --color=auto -i"
-alias egrep="egrep --color=auto -i"
-alias src="source ~/.zshrc"
-if type ccat > /dev/null 2>&1; then
-    alias cat="ccat"
-fi
-if type htop > /dev/null 2>&1; then
-    alias top="htop"
-fi
-
-## git 関係
-alias gst="git status -sb"
-alias gg="git status -sb"
-alias gm="git commit -m"
-alias gb="git branch -a"
-alias co="git checkout"
-
-## make
-alias j4="echo-sd \"デマアアアァアァァシアアアアァァァアアア\!\!\!\!\"; make -j 4"
-
-## グローバルエイリアス
-alias -g L="| less"
-alias -g G="| grep"
-alias -g W="| wc"
-
-## サーバ個別のalias設定をインポート
-if [ -f ~/.zshrc.alias ]; then
-    source ~/.zshrc.alias
-fi
-## エスケープシーケンスカラーの設定
-local DEFAULT=$'%{[m%}'
-local RED=$'%{[1;31m%}'
-local GREEN=$'%{[1;32m%}'
-local YELLOW=$'%{[1;33m%}'
-local BLUE=$'%{[1;34m%}'
-local PURPLE=$'%{[1;35m%}'
-local LIGHT_BLUE=$'%{[1;36m%}'
-local WHITE=$'%{[1;37m%}'
-# HISTORY
+# ヒストリの設定
 HISTFILE=~/.zsh_history
 HISTSIZE=1000000
 SAVEHIST=1000000
-## history (fc -l) コマンドをヒストリリストから取り除く。
-setopt hist_no_store
-## すぐにヒストリファイルに追記する。
-setopt inc_append_history
-## 直前と同じコマンドをヒストリに追加しない
-setopt hist_ignore_dups
-## zsh の開始, 終了時刻をヒストリファイルに書き込む
-setopt extended_history
-## ヒストリを呼び出してから実行する間に一旦編集
-setopt hist_verify
-## ヒストリを共有
-setopt share_history
-## コマンドラインの先頭がスペースで始まる場合ヒストリに追加しない
-setopt hist_ignore_space
-# プロンプトの設定
-# プロンプトが表示されるたびにプロンプト文字列を評価、置換する
-setopt PROMPT_SUBST
+
+# プロンプト
+# 1行表示
+# PROMPT="%~ %# "
+# 2行表示
+PROMPT="%{${fg[green]}%}[%n@%m]%{${reset_color}%} %~
+%# "
+
+
+# 単語の区切り文字を指定する
+autoload -Uz select-word-style
+select-word-style default
+# ここで指定した文字は単語区切りとみなされる
+# / も区切りと扱うので、^W でディレクトリ１つ分を削除できる
+zstyle ':zle:*' word-chars " /=;@:{},|"
+zstyle ':zle:*' word-style unspecified
+
+# Add fpath
+fpath+=~/.zfunc
+
+########################################
 # 補完
-## 補完候補を一覧表示
-setopt auto_list
-## TAB で順に補完候補を切り替える
-setopt auto_menu
-## '='以降の入力も補完する
-setopt magic_equal_subst
-## 補完関数の設定
-## 補完候補をカーソルで選択可能にする
-zstyle ':completion:*:default' menu select=1
-## 補完候補をグルーピングして表示する
-zstyle ':completion:*' completer _expand _complete _match _approximate _history
-    # _expand: グロブや変数を展開する
-    # _complete: 通常の補完
-    # _match: グロブでコマンドを補完する
-    # _approximate: ミススペルを訂正して補完する
-    # _history: 履歴から補完する
-zstyle ':completion:*:descriptions' format $YELLOW'completing %B%d%b'$DEFAULT
-## 自動入力されるカンマなどを適宜削除する
-setopt auto_param_keys
-## 補完候補を詰めて表示
-setopt list_packed
-# others
-## ビープを鳴らさない
-setopt nobeep
-## ディレクトリ名だけで cd
+# 補完機能を有効にする
+autoload -Uz compinit
+compinit
+
+# 補完で小文字でも大文字にマッチさせる
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
+
+# ../ の後は今いるディレクトリを補完しない
+zstyle ':completion:*' ignore-parents parent pwd ..
+
+# sudo の後ろでコマンド名を補完する
+zstyle ':completion:*:sudo:*' command-path /usr/local/sbin /usr/local/bin \
+                   /usr/sbin /usr/bin /sbin /bin /usr/X11R6/bin
+
+# オプション
+# 日本語ファイル名を表示可能にする
+setopt print_eight_bit
+
+# beep を無効にする
+setopt no_beep
+
+# フローコントロールを無効にする
+setopt no_flow_control
+
+# Ctrl+Dでzshを終了しない
+setopt ignore_eof
+
+# '#' 以降をコメントとして扱う
+setopt interactive_comments
+
+# ディレクトリ名だけでcdする
 setopt auto_cd
-## cdの履歴を保存
+
+# cd したら自動的にpushdする
 setopt auto_pushd
-## 重複したcdの履歴は保存しない
+# 重複したディレクトリを追加しない
 setopt pushd_ignore_dups
-## 3秒以上の処理は自動的に処理時間を表示
-REPORTTIME=3
 
-# pecoで履歴を検索する
-function peco-history-selection() {
-    cmd='tac'
-    case "${OSTYPE}" in
-        freebsd*|darwin*)
-            cmd=('tail' '-r')
+# 同時に起動したzshの間でヒストリを共有する
+setopt share_history
+
+# 同じコマンドをヒストリに残さない
+setopt hist_ignore_all_dups
+
+# スペースから始まるコマンド行はヒストリに残さない
+setopt hist_ignore_space
+
+# ヒストリに保存するときに余分なスペースを削除する
+setopt hist_reduce_blanks
+
+# 高機能なワイルドカード展開を使用する
+setopt extended_glob
+
+########################################
+# キーバインド
+
+# ^R で履歴検索をするときに * でワイルドカードを使用出来るようにする
+bindkey '^R' history-incremental-pattern-search-backward
+
+########################################
+# エイリアス
+
+alias la='ls -a'
+alias ll='ls -l'
+
+alias rm='rm -i'
+alias cp='cp -i'
+alias mv='mv -i'
+
+alias mkdir='mkdir -p'
+
+# sudo の後のコマンドでエイリアスを有効にする
+alias sudo='sudo '
+
+# グローバルエイリアス
+alias -g L='| less'
+alias -g G='| grep'
+
+# C で標準出力をクリップボードにコピーする
+# mollifier delta blog : http://mollifier.hatenablog.com/entry/20100317/p1
+if which pbcopy >/dev/null 2>&1 ; then
+    # Mac
+    alias -g C='| pbcopy'
+elif which xsel >/dev/null 2>&1 ; then
+    # Linux
+    alias -g C='| xsel --input --clipboard'
+elif which putclip >/dev/null 2>&1 ; then
+    # Cygwin
+    alias -g C='| putclip'
+fi
+
+
+
+########################################
+# OS 別の設定
+case ${OSTYPE} in
+    darwin*)
+        #Mac用の設定
+        export CLICOLOR=1
+        alias ls='ls -G -F'
         ;;
-    esac
-    BUFFER=`history -n 1 | $cmd | awk '!a[$0]++' | peco`
-    CURSOR=$#BUFFER
-    zle reset-prompt
-}
-zle -N peco-history-selection
+    linux*)
+        #Linux用の設定
+        alias ls='ls -F --color=auto'
+        ;;
+esac
 
-# pecoでスニペットを読み込む
-function peco-snippets-loader() {
-    if ls ~/.peco.snippet* >/dev/null 2>&1; then
-        snippet=`cat ~/.peco.snippet* | grep -v "^#" | peco`
-        BUFFER="$(echo $snippet | sed -e 's/^\[.*\] *//') "
-        CURSOR=$#BUFFER
+# vim:set ft=zsh:
+
+# neovim
+export XDG_CONFIG_HOME=~/.config
+
+# Add PIPENV_VENV_IN_PROJECT
+export PIPENV_VENV_IN_PROJECT=true
+export PATH="/usr/local/opt/ruby/bin:$PATH"
+
+# added by travis gem
+[ -f /Users/yamasakih/.travis/travis.sh ] && source /Users/yamasakih/.travis/travis.sh
+export PATH="/usr/local/lib/ruby/gems/2.6.0/bin:$PATH"
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/Users/yamasakih/anaconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/Users/yamasakih/anaconda3/etc/profile.d/conda.sh" ]; then
+        . "/Users/yamasakih/anaconda3/etc/profile.d/conda.sh"
     else
-        echo "~/.peco.snippet* is not found."
+        export PATH="/Users/yamasakih/anaconda3/bin:$PATH"
     fi
-    zle reset-prompt
+fi
+unset __conda_setup
+# <<< conda initialize <<<
+
+# Add poetry command
+export PATH=$PATH:"/Users/yamasakih/.poetry/bin"
+eval "$(rbenv init -)"
+
+# Add z command
+. ~/z/z.sh
+alias j=z
+
+# Add fzf configuration
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# alias for atcoder
+alias test='oj test -t 2 -d'
+alias submit='oj submit -l 4006 -y -w 0'
+alias dl='oj dl -d'
+
+# Add Path for LaTeX
+export PATH=/usr/local/texlive/2020/bin/x86_64-darwin:$PATH
+
+# Add Path to anaconda3/bin for powerline-shell
+export PATH=~/anaconda3/bin:$PATH
+
+# Add powerline-shell
+function powerline_precmd() {
+    PS1="
+$(powerline-shell --shell zsh $?)
+$ "
 }
-zle -N peco-snippets-loader
 
-# peco関係の関数をキーバインドに登録
-if type peco >/dev/null 2>&1; then
-    bindkey '^r' peco-history-selection
-    bindkey '^x' peco-snippets-loader
-fi
-
-# zplug plugins
-
-zplug 'mafredri/zsh-async', on:sindresorhus/pure
-zplug 'sindresorhus/pure', use:pure.zsh, as:theme
-zplug 'chrissicool/zsh-256color'
-zplug "mrowa44/emojify", as:command
-zplug 'b4b4r07/emoji-cli'
-zplug 'zsh-users/zsh-completions'
-zplug 'zsh-users/zsh-syntax-highlighting', defer:2
-zplug 'yonchu/3935922', \
-    from:gist, \
-    as:plugin, \
-    use:'chpwd_for_zsh.sh'
-zplug 'zplug/zplug', hook-build:'zplug --self-manage'
-
-# Install plugins if there are plugins that have not been installed
-if ! zplug check --verbose; then
-    printf "Install? [y/N]: "
-    if read -q; then
-        echo; zplug install
+function install_powerline_precmd() {
+  for s in "${precmd_functions[@]}"; do
+    if [ "$s" = "powerline_precmd" ]; then
+      return
     fi
+  done
+  precmd_functions+=(powerline_precmd)
+}
+
+if [ "$TERM" != "linux" ]; then
+    install_powerline_precmd
 fi
 
-# Then, source plugins and add commands to $PATH
-zplug load --verbose
+export PATH="/Users/yamasakih/.cargo/bin:$PATH"
 
-# for debug
-#if (which zprof > /dev/null) ;then
-#    zprof | less
-#fi
+# Add gamess gms command
+export PATH="/Applications/gamess:$PATH"
