@@ -221,3 +221,30 @@ export PATH="/Users/yamasakih/.cargo/bin:$PATH"
 
 # Add gamess gms command
 export PATH="/Applications/gamess:$PATH"
+
+# Add devcontainer configuration
+if [ -z "$SSH_AUTH_SOCK" ]; then
+   # Check for a currently running instance of the agent
+   RUNNING_AGENT="`ps -ax | grep 'ssh-agent -s' | grep -v grep | wc -l | tr -d '[:space:]'`"
+   if [ "$RUNNING_AGENT" = "0" ]; then
+        # Launch a new instance of the agent
+        ssh-agent -s &> $HOME/.ssh/ssh-agent
+   fi
+   eval `cat $HOME/.ssh/ssh-agent`
+fi
+
+# Add bash_completion command configuration
+complete -C '/usr/local/bin/aws_completer' aws
+
+# Add ssh-agent configuration
+ssh-add -K &> /dev/null
+
+# Add gh completion
+eval "$(gh completion -s zsh)"
+
+# Add path to cargo
+source /Users/yamasaki/.cargo/env
+
+# Add go path
+export GOPATH=$HOME/go
+export PATH=$PATH:$GOPATH/bin
