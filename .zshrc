@@ -4,7 +4,6 @@
 
 ########################################
 # 環境変数
-# export LANG=ja_JP.UTF-8
 export LANG=en_US.UTF-8
 
 # 色を使用出来るようにする
@@ -37,11 +36,13 @@ zstyle ':zle:*' word-style unspecified
 
 # Add fpath
 fpath+=~/.zfunc
+fpath=(~/.zsh/completion $fpath)
 
 ########################################
 # 補完
 # 補完機能を有効にする
-autoload -Uz compinit
+autoload bashcompinit && bashcompinit
+autoload -Uz compinit && compinit -i
 compinit
 
 # 補完で小文字でも大文字にマッチさせる
@@ -131,8 +132,6 @@ elif which putclip >/dev/null 2>&1 ; then
     alias -g C='| putclip'
 fi
 
-
-
 ########################################
 # OS 別の設定
 case ${OSTYPE} in
@@ -149,35 +148,12 @@ esac
 
 # vim:set ft=zsh:
 
-# neovim
-export XDG_CONFIG_HOME=~/.config
-
-# Add PIPENV_VENV_IN_PROJECT
-export PIPENV_VENV_IN_PROJECT=true
-export PATH="/usr/local/opt/ruby/bin:$PATH"
-
-# added by travis gem
-[ -f /Users/yamasakih/.travis/travis.sh ] && source /Users/yamasakih/.travis/travis.sh
-export PATH="/usr/local/lib/ruby/gems/2.6.0/bin:$PATH"
-
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/Users/yamasakih/anaconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/Users/yamasakih/anaconda3/etc/profile.d/conda.sh" ]; then
-        . "/Users/yamasakih/anaconda3/etc/profile.d/conda.sh"
-    else
-        export PATH="/Users/yamasakih/anaconda3/bin:$PATH"
-    fi
-fi
-unset __conda_setup
-# <<< conda initialize <<<
-
 # Add poetry command
-export PATH=$PATH:"/Users/yamasakih/.poetry/bin"
-eval "$(rbenv init -)"
+if [[ ${OSTYPE} =~ 'darwin*' ]]; then
+  export PATH="$PATH:/Users/yamasaki/.local/bin"
+else
+  export PATH="$PATH:/home/yamazaki/.poetry/bin"
+fi
 
 # Add z command
 . ~/z/z.sh
@@ -185,17 +161,6 @@ alias j=z
 
 # Add fzf configuration
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
-# alias for atcoder
-alias test='oj test -t 2 -d'
-alias submit='oj submit -l 4006 -y -w 0'
-alias dl='oj dl -d'
-
-# Add Path for LaTeX
-export PATH=/usr/local/texlive/2020/bin/x86_64-darwin:$PATH
-
-# Add Path to anaconda3/bin for powerline-shell
-export PATH=~/anaconda3/bin:$PATH
 
 # Add powerline-shell
 function powerline_precmd() {
@@ -217,7 +182,8 @@ if [ "$TERM" != "linux" ]; then
     install_powerline_precmd
 fi
 
-export PATH="/Users/yamasakih/.cargo/bin:$PATH"
+# Add Rust configuration
+export PATH="~/.cargo/bin:$PATH"
 
 # Add gamess gms command
 export PATH="/Applications/gamess:$PATH"
@@ -243,8 +209,13 @@ ssh-add -K &> /dev/null
 eval "$(gh completion -s zsh)"
 
 # Add path to cargo
-source /Users/yamasaki/.cargo/env
+source ~/.cargo/env
 
-# Add go path
-export GOPATH=$HOME/go
-export PATH=$PATH:$GOPATH/bin
+# Add AWS profile
+export AWS_PROFILE=default
+export ACCOUNT_ID=
+export ECR_ADDRESS=${ACCOUNT_ID}.dkr.ecr.ap-northeast-1.amazonaws.com
+
+# Add zsh-autosuggestions
+source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=5'
