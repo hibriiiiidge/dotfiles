@@ -203,7 +203,9 @@ fi
 complete -C '/usr/local/bin/aws_completer' aws
 
 # Add ssh-agent configuration
-ssh-add -K &> /dev/null
+if !"${REMOTE_CONTAINERS}" ; then
+  ssh-add -K &> /dev/null
+fi
 
 # Add gh completion
 eval "$(gh completion -s zsh)"
