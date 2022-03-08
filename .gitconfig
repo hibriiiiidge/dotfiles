@@ -1,0 +1,25 @@
+[core]
+        editor = vim -c \"set fenc=utf-8\"
+[alias]
+        lol = log --graph --decorate --pretty=oneline --abbrev-commit --all
+        fp = fetch --prune
+        wip = commit --allow-empty
+[user]
+        name = yamasakih
+        email = yamasaki.phone@gmail.com
+[color "status"]
+    added = green bold
+    changed = red bold strike
+    untracked = cyan
+    branch = yellow black bold ul
+    interactive = auto
+    diff = auto
+[push]
+    default = tracking
+[fetch]
+        prune = true
+[filter "lfs"]
+        clean = git-lfs clean -- %f
+        smudge = git-lfs smudge -- %f
+        process = git-lfs filter-process
+        required = true
