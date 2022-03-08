@@ -9,6 +9,10 @@ ln -fs ~/dotfiles/.zshrc .
 cd ~/
 ln -fs ~/dotfiles/.vimrc .
 
+# .gitconfig
+cd ~/
+ln -fs ~/dotfiles/.gitconfig .
+
 # powerline_shell
 pip install powerline_shell
 
