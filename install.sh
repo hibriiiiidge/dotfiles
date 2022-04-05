@@ -35,6 +35,7 @@ git clone https://github.com/zsh-users/zsh-autosuggestions ~/.zsh/zsh-autosugges
 # fzf
 git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 yes | ~/.fzf/install
+apt update && apt install -y --no-install-recommends locales-all
 
 # install gh
 gh -version &> /dev/null
