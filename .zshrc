@@ -5,6 +5,8 @@
 ########################################
 # 環境変数
 export LANG=en_US.UTF-8
+export LANGUAGE=en_US.UTF-8
+export LC_ALL=en_US.UTF-8
 
 # 色を使用出来るようにする
 autoload -Uz colors
