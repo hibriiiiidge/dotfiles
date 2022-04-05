@@ -229,7 +229,9 @@ _luigi_completion(){
 complete -o default -o filenames -o bashdefault -F _luigi_completion python luigi
 
 # Add ssh-agent configuration
-if [ -n "${REMOTE_CONTAINERS}" ] ; then
+if "${REMOTE_CONTAINERS}" ; then
+
+else
   ssh-add -K &> /dev/null
 fi
 
