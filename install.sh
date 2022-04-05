@@ -22,6 +22,10 @@ git clone git@github.com:rupa/z.git ~/z
 # git completions
 mkdir -p ~/.zsh/completions
 cd ~/.zsh/completions
+wget --version &> /dev/null
+if [ $? -ne 0 ] ; then
+  apt update && apt install -y --no-install-recommends wget
+fi
 wget https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash
 wget -O _git https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.zsh
 
