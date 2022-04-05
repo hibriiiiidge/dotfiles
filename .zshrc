@@ -202,17 +202,6 @@ fi
 # Add bash_completion command configuration
 complete -C '/usr/local/bin/aws_completer' aws
 
-# Add ssh-agent configuration
-if !"${REMOTE_CONTAINERS}" ; then
-  ssh-add -K &> /dev/null
-fi
-
-# Add gh completion
-eval "$(gh completion -s zsh)"
-
-# Add path to cargo
-source ~/.cargo/env
-
 # Add AWS profile
 export AWS_PROFILE=default
 export ACCOUNT_ID=
@@ -238,3 +227,16 @@ _luigi_completion(){
     return 0
 }
 complete -o default -o filenames -o bashdefault -F _luigi_completion python luigi
+
+# Add ssh-agent configuration
+if [ -n "${REMOTE_CONTAINERS}" ] ; then
+  ssh-add -K &> /dev/null
+fi
+
+# Add gh completion
+eval "$(gh completion -s zsh)"
+
+# Add path to cargo
+if [ -e ~/.cargo/env ] ; then
+  source ~/.cargo/env
+fi
