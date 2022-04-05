@@ -234,7 +234,10 @@ if [ -n "${REMOTE_CONTAINERS}" ] ; then
 fi
 
 # Add gh completion
-eval "$(gh completion -s zsh)"
+gh -version &> /dev/null
+if [ $? -eq 0 ] ; then
+  eval "$(gh completion -s zsh)"
+fi
 
 # Add path to cargo
 if [ -e ~/.cargo/env ] ; then
