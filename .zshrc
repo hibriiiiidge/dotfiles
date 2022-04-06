@@ -233,6 +233,10 @@ _luigi_completion(){
 }
 complete -o default -o filenames -o bashdefault -F _luigi_completion python luigi
 
+# Add luigi configuration
+export LUIGI_CONFIG_PARSER=ini
+export LUIGI_CONFIG_PATH=.
+
 # Add ssh-agent configuration
 if ! "${REMOTE_CONTAINERS}" ; then
   ssh-add -K &> /dev/null
