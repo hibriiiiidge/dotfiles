@@ -213,6 +213,9 @@ export ECR_ADDRESS=${ACCOUNT_ID}.dkr.ecr.ap-northeast-1.amazonaws.com
 source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=5'
 
+# ADD PYTEST_ADDOPTS
+export PYTEST_ADDOPTS='-v --disable-warnings --ff'
+
 # Add luigi_completion
 _luigi_completion(){
     COMPREPLY=()
