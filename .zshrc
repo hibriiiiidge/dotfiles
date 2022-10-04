@@ -252,3 +252,8 @@ fi
 if [ -e ~/.cargo/env ] ; then
   source ~/.cargo/env
 fi
+
+# Add gcd (cd to git repository root)
+function gcd() {
+  cd `git rev-parse --show-toplevel`
+}
