@@ -8,12 +8,12 @@
         name = yamasakih
         email = yamasaki.phone@gmail.com
 [color "status"]
-    added = green bold
-    changed = red bold strike
-    untracked = cyan
-    branch = yellow black bold ul
-    interactive = auto
-    diff = auto
+        added = green bold
+        changed = red bold strike
+        untracked = cyan
+        branch = yellow black bold ul
+        interactive = auto
+        diff = auto
 [push]
     default = tracking
 [fetch]
@@ -23,3 +23,6 @@
         smudge = git-lfs smudge -- %f
         process = git-lfs filter-process
         required = true
+[rebase]
+        autosquash = true
+        autostash = true
