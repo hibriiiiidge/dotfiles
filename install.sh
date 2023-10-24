@@ -13,11 +13,9 @@ ln -fs ~/dotfiles/.vimrc .
 cd ~/
 ln -fs ~/dotfiles/.gitconfig .
 
-# powerline_shell
-pip install powerline_shell
-
-# z
-git clone git@github.com:rupa/z.git ~/z
+# .zpreztorc
+cd ~/
+ln -fs ~/dotfiles/.zpreztorc .
 
 # git completions
 mkdir -p ~/.zsh/completions
@@ -32,11 +30,6 @@ wget -O _git https://raw.githubusercontent.com/git/git/master/contrib/completion
 # zsh-autosuggestions
 git clone https://github.com/zsh-users/zsh-autosuggestions ~/.zsh/zsh-autosuggestions
 
-# fzf
-git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
-yes | ~/.fzf/install
-apt update && apt install -y --no-install-recommends locales-all
-
 # install gh
 gh -version &> /dev/null
 if [ $? -ne 0 ] ; then
@@ -45,3 +38,6 @@ if [ $? -ne 0 ] ; then
     && apt update \
     && apt install -y --no-install-recommends gh
 fi
+
+# zprezto
+git clone --recursive https://github.com/sorin-ionescu/prezto.git ~/.zprezto

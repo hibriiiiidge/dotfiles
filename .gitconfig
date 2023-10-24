@@ -1,28 +1,23 @@
-[core]
-        editor = vim -c \"set fenc=utf-8\"
-[alias]
-        lol = log --graph --decorate --pretty=oneline --abbrev-commit --all
-        fp = fetch --prune
-        wip = commit --allow-empty
 [user]
-        name = yamasakih
-        email = yamasaki.phone@gmail.com
-[color "status"]
-        added = green bold
-        changed = red bold strike
-        untracked = cyan
-        branch = yellow black bold ul
-        interactive = auto
-        diff = auto
+  name    = Yasunori Takahashi
+  email   = hibriiiiidge@gmail.com
+[color]
+  ui      = auto
+[alias]
+  g       = git
+  df      = diff
+  rb      = rebase
+  co      = checkout
+  br      = branch
+  st      = status
+  cm      = commit
+  ds      = diff --staged
+	sw      = switch
 [push]
-    default = tracking
-[fetch]
-        prune = true
-[filter "lfs"]
-        clean = git-lfs clean -- %f
-        smudge = git-lfs smudge -- %f
-        process = git-lfs filter-process
-        required = true
-[rebase]
-        autosquash = true
-        autostash = true
+  default = current
+[init]
+	templatedir = ~/.git_template
+[commit]
+  template = /Users/yasunoritakahashi/.gitmessage.txt
+[pull]
+	rebase = false
