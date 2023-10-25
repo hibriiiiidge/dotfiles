@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 # set -euo pipefail
 
+apt update && && apt install -y ca-certificates
+
 # .zshrc
 cd ~/
 ln -fs ~/dotfiles/.zshrc .
