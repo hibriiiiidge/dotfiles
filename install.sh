@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # set -euo pipefail
 
-apt update && && apt install -y ca-certificates
+apt update && apt install -y ca-certificates
 
 # .zshrc
 cd ~/
