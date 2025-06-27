@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # set -euo pipefail
 
-apt update && apt install -y ca-certificates
+apk update && apk add --no-cache ca-certificates
 
 # .zshrc
 cd ~/
@@ -24,7 +24,7 @@ mkdir -p ~/.zsh/completions
 cd ~/.zsh/completions
 wget --version &> /dev/null
 if [ $? -ne 0 ] ; then
-  apt update && apt install -y --no-install-recommends wget
+  apk update && apk add --no-cache --no-install-recommends wget
 fi
 wget https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash
 wget -O _git https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.zsh
@@ -36,9 +36,9 @@ git clone https://github.com/zsh-users/zsh-autosuggestions ~/.zsh/zsh-autosugges
 gh -version &> /dev/null
 if [ $? -ne 0 ] ; then
   curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | gpg --no-tty --dearmor -o /usr/share/keyrings/githubcli-archive-keyring.gpg \
-    && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | tee /etc/apt/sources.list.d/github-cli.list > /dev/null \
-    && apt update \
-    && apt install -y --no-install-recommends gh
+    && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | tee /etc/apk/sources.list.d/github-cli.list > /dev/null \
+    && apk update \
+    && apk add --no-cache --no-install-recommends gh
 fi
 
 # zprezto
