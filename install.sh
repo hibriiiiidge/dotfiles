@@ -43,3 +43,12 @@ fi
 
 # zprezto
 git clone --recursive https://github.com/sorin-ionescu/prezto.git ~/.zprezto
+
+
+if [ -n "$DEVCONTAINER" ]; then
+  echo "Running inside a devcontainer – skip ssh-agent setup"
+else
+  # 既存の ssh-agent 起動処理 …
+  eval "$(ssh-agent -s)"
+  ssh-add
+fi
